@@ -1,18 +1,14 @@
-# Buzzly E-commerce Application 🛒
-
-A full-featured e-commerce application built with React, Node.js, and MongoDB.
+<<<<<<< HEAD
+# E-commerce - React & Tailwind 🛒👜🛒👜
 
 ![preview](./.github/preview_intro.gif)
 
-## Features
+> # Description 
 
-- User authentication and authorization
-- Product browsing and filtering
-- Shopping cart management
-- Secure checkout process
-- Responsive design with Tailwind CSS
-- MongoDB database integration
-- Docker support for easy deployment
+This project is a responsive e-commerce website. The user can: view information about each product, filter products by category, and add / remove products from the cart. 
+I styled the landing page with Tailwind CSS and built it with React Js. Also, Tailwind CSS helped with the responsiveness of the website.   
+I created the routes to the other pages with react-router-dom.
+The products data were fetched from [Fake Store API](https://fakestoreapi.com/).   
 
 
 ![preview](./.github/preview_products.gif)
