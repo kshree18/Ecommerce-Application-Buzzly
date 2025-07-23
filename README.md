@@ -1,4 +1,4 @@
-# E-commerce - React & Tailwind 🛒👜🛒👜
+# E-commerce - React (Buzzly) 🛒👜🛒👜
 
 ![preview](./.github/preview_intro.gif)
 
