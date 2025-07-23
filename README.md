@@ -2,7 +2,7 @@
 
 ![preview](./.github/preview_intro.gif)
 
-> # Description 
+# Description 
 
 This project is a responsive e-commerce website. The user can: view information about each product, filter products by category, and add / remove products from the cart. 
 I styled the landing page with Tailwind CSS and built it with React Js. Also, Tailwind CSS helped with the responsiveness of the website.   
