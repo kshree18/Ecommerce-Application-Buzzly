@@ -1,4 +1,4 @@
-# E-commerce - React (Buzzly) 🛒👜🛒👜
+# E-commerce - React (Buyzzle) 🛒👜🛒👜
 
 ![preview](./.github/preview_intro.gif)
 
