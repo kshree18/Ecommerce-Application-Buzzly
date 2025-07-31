@@ -12,27 +12,26 @@ import orderRoutes from './routes/orders.js';
 import cartRoutes from './routes/cart.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
-// Load environment variables
+// Load env variables (Render injects them automatically, local dev uses .env)
 dotenv.config();
 
 const app = express();
-
-// Connect to MongoDB
-connectDB();
 
 // Security middleware
 app.use(helmet());
 app.use(compression());
 
-// CORS configuration
+// Temporary CORS for testing on Render
+// Later: replace '*' with your actual frontend domain
 app.use(cors({
-  origin: '*'
+  origin: '*',
+  credentials: true
 }));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
   message: 'Too many requests from this IP, please try again later.'
 });
 app.use('/api/', limiter);
@@ -50,8 +49,8 @@ app.use('/api/cart', cartRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'success', 
+  res.status(200).json({
+    status: 'success',
     message: 'Ecommerce API is running',
     timestamp: new Date().toISOString()
   });
@@ -70,8 +69,19 @@ app.use('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
-}); 
+// Connect to DB, then start server
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📊 Environment: ${process.env.NODE_ENV}`);
+      console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Failed to connect to MongoDB:", err);
+    // Still start server so Render detects the port, but warn about DB
+    app.listen(PORT, () => {
+      console.warn(`⚠️ Server running on port ${PORT} WITHOUT database connection`);
+    });
+  });
