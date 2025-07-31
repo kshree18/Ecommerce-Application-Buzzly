@@ -12,8 +12,8 @@ import orderRoutes from './routes/orders.js';
 import cartRoutes from './routes/cart.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
-// Load env variables (Render injects them automatically, local dev uses .env)
-dotenv.config();
+// Load environment variables
+dotenv.config({ path: './config.env' });
 
 const app = express();
 
@@ -24,7 +24,9 @@ app.use(compression());
 // Temporary CORS for testing on Render
 // Later: replace '*' with your actual frontend domain
 app.use(cors({
-  origin: '*',
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://your-frontend-domain.com'] 
+    : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));
 
@@ -69,19 +71,8 @@ app.use('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-// Connect to DB, then start server
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-      console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
-    });
-  })
-  .catch((err) => {
-    console.error("❌ Failed to connect to MongoDB:", err);
-    // Still start server so Render detects the port, but warn about DB
-    app.listen(PORT, () => {
-      console.warn(`⚠️ Server running on port ${PORT} WITHOUT database connection`);
-    });
-  });
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV}`);
+  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+}); 
