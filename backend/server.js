@@ -13,7 +13,7 @@ import cartRoutes from './routes/cart.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 // Load environment variables
-dotenv.config({ path: './config.env' });
+dotenv.config();
 
 const app = express();
 
@@ -26,10 +26,7 @@ app.use(compression());
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.com'] 
-    : ['http://localhost:5173', 'http://localhost:3000'],
-  credentials: true
+  origin: '*'
 }));
 
 // Rate limiting
